@@ -1,0 +1,86 @@
+@extends('layouts.app')
+
+
+@section('content')
+<div class="row">
+    <div class="col-lg-12 margin-tb">
+        <div class="pull-left">
+            <h2>Users Management</h2> 
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-success" href="{{ route('users.create') }}"> Add new User</a>
+        </div>
+    </div>
+</div>
+
+
+@if ($message = Session::get('success'))
+<div class="alert alert-success">
+  <p>{{ $message }}</p>
+</div>
+@endif
+
+
+
+    <!-- user counts  -->
+    <table class="table">
+
+<tbody>
+  <tr>
+    
+    <td><div class="card card-hover">
+                          <div class="box bg-info text-center">
+                              <h1 class="font-light text-white"><i class="mdi mdi-receipt"></i></h1>
+                              <h6 class="text-white"> Registered Users</h6> <br>
+                              <h6 class="text-white">{{ $countreg }}</h6>
+                              
+                          </div>
+                          
+                      </div></td>
+   
+
+  </tr>
+  
+</tbody>
+</table>
+
+
+
+
+<table class="table table-bordered table-dark">
+ <tr>
+   <th>No</th>
+   <th>User Name</th>
+   <th>Email</th>
+   <th>Job Tittle</th>
+   <th width="280px">Action</th>
+ </tr>
+ @foreach ($data as $key => $user)
+  <tr>
+    <td>{{ ++$i }}</td>
+    <td>{{ $user->name }}</td>
+    <td>{{ $user->email }}</td>
+    <td>
+      @if(!empty($user->getRoleNames()))
+        @foreach($user->getRoleNames() as $v)
+           <label class="badge badge-success">{{ $v }}</label>
+        @endforeach
+      @endif
+    </td>
+    <td>
+       <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
+       <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>
+        {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline']) !!}
+            {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+        {!! Form::close() !!}
+    </td>
+  </tr>
+ @endforeach
+</table>
+
+
+<!-- {!! $data->render() !!} -->
+
+
+<!-- <p class="text-center text-primary"><small>Tutorial by ItSolutionStuff.com</small></p>--> 
+@endsection
